@@ -69,56 +69,73 @@ std::string NumToEnglish::getText(vector<int> digitsVec)
         while (i >= 0)
         {
             if (digitsVec[i]) // if number is non-zero
-            {
+            { 
+                if (!text.empty())
+                    text += " ";
+
                 // switch-case to check number position, taking 3 at a time
                 switch ((i+1)%3) 
                 {
                     case 2: // current number at 2nd position
+                    {
+                        // in number is less than 2, its already there in the array
+                        if (digitsVec[i] < 2)
                         {
-                            // in number is less than 2, its already there in the array
-                            if (digitsVec[i] < 2)
-                            {
-                                // get corrsponding text
-                                text += digitStr_g[digitsVec[i]*10+digitsVec[i-1]] + " " + placeVal_g[i] + " ";
-                                i -= 2;
-                            }
-                            else // number is bigger, need to construct text
-                            {
-                                if (digitsVec[i] == 2) // if number is 2, mutiply by 10 coz 
-                                {                      // is a two digit number.
-                                    text += digitStr_g[digitsVec[i--]*10] + " ";
-                                }
-                                else if (digitsVec[i]) // other number, add 20 and get the text from vector
-                                {
-                                    text += digitStr_g[20+digitsVec[i--]] + " ";
-                                }
+                            // get corrsponding text
+                            text += digitStr_g[digitsVec[i]*10+digitsVec[i-1]];
+                            if (!placeVal_g[i].empty())
+                                text += " " + placeVal_g[i];
 
-                                if (digitsVec[i]) // remaining last digit, if non-zero
-                                {
-                                    // get text from array
-                                    text += digitStr_g[digitsVec[i]] + " ";
-                                }
-
-                                // get the place value from array
-                                text +=  placeVal_g[i--] + " ";
-                            }
-
-                            break;
+                            i -= 2;
                         }
+                        else // number is bigger, need to construct text
+                        {
+                            if (digitsVec[i] == 2) // if number is 2, mutiply by 10 coz 
+                            {                      // is a two digit number.
+                                text += digitStr_g[digitsVec[i--]*10];
+                            }
+                            else if (digitsVec[i]) // other number, add 20 and get the text from vector
+                            {
+                                text += digitStr_g[20+digitsVec[i--]];
+                            }
+
+                            if (digitsVec[i]) // remaining last digit, if non-zero
+                            {
+                                // get text from array
+                                text += "-" + digitStr_g[digitsVec[i]];
+                            }
+
+                            // get the place value from array
+                            if (!placeVal_g[i].empty())
+                                text +=  " " + placeVal_g[i];
+
+                            i --;
+                        }
+
+                        break;
+                    }
                     case 1: // number is at 1st position
                     {
-                        text += digitStr_g[digitsVec[i--]] + " " + placeVal_g[i] + " ";
+                        text += digitStr_g[digitsVec[i]];
+                        if (!placeVal_g[i].empty())
+                            text += " " + placeVal_g[i];
+
+                        i --;
                         break;
                     }
                     case 0: // one digit number
                     {
                         if (i < 3) // if number is less than 3, get the place
                         {
-                            text += digitStr_g[digitsVec[i--]] + " " + placeVal_g[i] + " ";
+                            text += digitStr_g[digitsVec[i]];
+                            if (!placeVal_g[i].empty())
+                                text += " " + placeVal_g[i];
+
+                            i --;
                         }
                         else // number is bigger at that position have place value as hundred
                         {
-                            text += digitStr_g[digitsVec[i--]] + " " +  placeVal_g[2] + " ";
+                            text += digitStr_g[digitsVec[i--]] + " " +  placeVal_g[2];
                         }
                         break;
                     }
@@ -130,7 +147,7 @@ std::string NumToEnglish::getText(vector<int> digitsVec)
                 // e.g. 001, 100, 1000, 10000, 100000
                 if (!visited && !text.empty() && i > 3)
                 {
-                    text +=  placeVal_g[i] + " ";
+                    text +=  " " + placeVal_g[i];
                     visited = true;
                 }
 
