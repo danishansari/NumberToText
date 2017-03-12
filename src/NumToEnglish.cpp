@@ -38,11 +38,16 @@ std::string NumToEnglish::convert(string numStr)
     // parsing each digits, to convert to int
     for (int i = numStr.length()-1; i >=0 ; i--)
     {
-        // conversion to int
-        int tmpNum = (int)numStr[i] - 48;
+        if ((int)numStr[i] > 47 && (int)numStr[i] < 58)
+        {
+            // conversion to int
+            int tmpNum = (int)numStr[i] - 48;
 
-        // push into the vector 
-        digitsVec.push_back(tmpNum);
+            // push into the vector 
+            digitsVec.push_back(tmpNum);
+        }
+        else
+            return "invalid input";
     }
 
     // helper function to convert vector of int to text.
@@ -62,7 +67,7 @@ std::string NumToEnglish::getText(vector<int> digitsVec)
     if (i == 0 && digitsVec[i] == 0)
         text += digitStr_g[digitsVec[i]];
     else if (i > 51) // if number is too big, not spported
-        text = "number not supported";
+        text = "too long input";
     else // convert number to text
     {
         // iterate for ech digits
